@@ -2,7 +2,7 @@ const { connect } = require('../config/db.config');
 const logger = require('../logger/api.logger');
 
 
-class PersonalPizzaRepository {
+class PersonRepository {
 
     db = {};
 
@@ -14,36 +14,48 @@ class PersonalPizzaRepository {
         });
     }
 
-    async getPersonalPizzas() {
+    async getPeople() {
         
         try {
-            const pp = await this.db.tasks.findAll();
-            console.log('personal pizza:::', pp);
+            const pp = await this.db.person.findAll();
+            console.log('people:::', pp);
             return pp;
         } catch (err) {
             console.log(err);
             return [];
         }
     }
+    
+    async getPeople() {
+        
+        try {
+            const people = await this.db.person.findAll({attributes: ['person']});
+            console.log('people:::', people);
+            return people;
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
 
-    async createPersonalPizza(personalPizza) {
+    async createPersonalPizza(person) {
         let data = {};
         try {
-            personalPizza.date = new Date().toISOString();
-            data = await this.db.personal_pizza.create(personalPizza);
+            person.date = new Date().toISOString();
+            data = await this.db.person.create(person);
         } catch(err) {
             logger.error('Error::' + err);
         }
         return data;
     }
 
-    async updateTask(personalPizza) {
+    async updatePersonalPizza(person) {
         let data = {};
         try {
-            personalPizza.date = new Date().toISOString();
-            data = await this.db.personal_pizza.update({...personalPizza}, {
+            person.date = new Date().toISOString();
+            data = await this.db.person.update({...person}, {
                 where: {
-                    id: personalPizza.id
+                    id: person.id
                 }
             });
         } catch(err) {
@@ -52,10 +64,10 @@ class PersonalPizzaRepository {
         return data;
     }
 
-    async deleteTask(ppId) {
+    async deletePersonalPizza(ppId) {
         let data = {};
         try {
-            data = await this.db.personal_pizza.destroy({
+            data = await this.db.person.destroy({
                 where: {
                     id: ppId
                 }
@@ -69,4 +81,4 @@ class PersonalPizzaRepository {
 
 }
 
-module.exports = new PersonalPizzaRepository();
+module.exports = new PersonRepository();

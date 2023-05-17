@@ -24,9 +24,9 @@ const connect = () => {
     const db = {};
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
-    // db.tasks = require("../model/task.model")(sequelize, DataTypes, Model);
     db.personal_pizza = require("../model/personal_pizza.model")(sequelize, DataTypes, Model);
-
+    db.person = require("../model/person.model")(sequelize, DataTypes, Model);
+// TODO: find way to init personal pizza and person from csv files from here
     return db;
 
 }
