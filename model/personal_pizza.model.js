@@ -1,16 +1,27 @@
+const { Sequelize } = require('sequelize');
+
 module.exports = (sequelize, DataTypes, Model) => {
 
     class PersonalPizza extends Model {}
 
     PersonalPizza.init({
         // Model attributes are defined here
-        person: {
-          type: DataTypes.STRING,
-          allowNull: false
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          primaryKey: true
+        },
+        person_id: {
+          type: Sequelize.UUID,
+          onDelete: 'cascade',
+          references: {
+            model: 'people',
+            key: 'id'
+          }
         },
         meat_type: {
           type: DataTypes.STRING
-          // allowNull defaults to true
+          // allowNull: true
         },
         date: {
           type: DataTypes.DATE
@@ -19,7 +30,7 @@ module.exports = (sequelize, DataTypes, Model) => {
       }, {
         // Other model options go here
         sequelize, // We need to pass the connection instance
-        modelName: 'personalPizza' // We need to choose the model name
+        modelName: 'personal_pizza', // We need to choose the model name
       });
       
       return PersonalPizza;
